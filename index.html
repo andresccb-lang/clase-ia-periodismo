@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clase 1 · IA y Periodismo</title>
+  <style>
+:root {
+  --ink: #132129;
+  --blue: #0b3442;
+  --teal: #247a76;
+  --gold: #ffd166;
+  --coral: #d75f49;
+  --paper: #fbfaf6;
+  --muted: #edf3f1;
+  --line: #d9ded9;
+  --text-soft: #53606a;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+a { color: inherit; }
+button, textarea { font: inherit; }
+.shell { width: min(1120px, calc(100% - 36px)); margin: 0 auto; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(251,250,246,.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+.nav {
+  height: 68px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 22px;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: var(--white);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--blue), var(--teal) 58%, var(--gold));
+}
+.brand strong, .brand small { display: block; }
+.brand small { color: var(--text-soft); font-size: 12px; }
+nav { display: flex; gap: 18px; color: #33424c; font-size: 14px; }
+nav a { text-decoration: none; }
+
+.hero {
+  min-height: 720px;
+  display: grid;
+  align-items: center;
+  color: var(--white);
+  background:
+    linear-gradient(125deg, rgba(11,52,66,.97), rgba(21,82,86,.94)),
+    var(--blue);
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.08fr .92fr;
+  gap: 48px;
+  align-items: center;
+}
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--coral);
+  text-transform: uppercase;
+  letter-spacing: .11em;
+  font-size: 12px;
+  font-weight: 900;
+}
+.hero .eyebrow { color: var(--gold); }
+h1, h2, h3, p { margin-top: 0; }
+h1 {
+  font-size: clamp(46px, 7vw, 82px);
+  line-height: .92;
+  letter-spacing: 0;
+  margin-bottom: 22px;
+}
+h2 {
+  color: var(--blue);
+  font-size: clamp(32px, 4vw, 50px);
+  line-height: 1;
+  letter-spacing: 0;
+  margin-bottom: 14px;
+}
+h3 { color: var(--blue); line-height: 1.15; }
+.hero-copy { color: rgba(255,255,255,.84); font-size: 21px; max-width: 720px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.btn {
+  border: 0;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 850;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn.primary { background: var(--gold); color: var(--ink); }
+.btn.ghost { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,.38); }
+.btn.ghost.dark { color: var(--blue); border-color: var(--line); }
+.class-card {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 10px;
+  padding: 26px;
+}
+.class-card span { color: rgba(255,255,255,.72); }
+.class-card strong { display: block; color: var(--gold); font-size: 48px; line-height: 1; margin: 8px 0 12px; }
+.class-card p, .class-card a { color: rgba(255,255,255,.86); }
+.mini-list { border-top: 1px solid rgba(255,255,255,.2); padding-top: 16px; margin-top: 16px; }
+.mini-list b, .mini-list a { display: block; }
+.mini-list a { margin-top: 4px; }
+
+.section { padding: 84px 0; }
+.muted { background: var(--muted); }
+.section-head { max-width: 800px; margin-bottom: 34px; }
+.section-head p { color: var(--text-soft); font-size: 18px; }
+
+.outcomes, .data-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.outcomes article, .data-card, .quiz-card, .result-box, .channels-panel, .risk-board {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.outcomes article { min-height: 210px; padding: 20px; }
+.outcomes span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: var(--white);
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+.data-card { padding: 18px; min-height: 255px; border-top: 5px solid var(--teal); }
+.data-card:nth-child(2n) { border-top-color: var(--coral); }
+.data-card:nth-child(3n) { border-top-color: var(--gold); }
+.data-card strong { display: block; font-size: 30px; color: var(--blue); line-height: 1; margin-bottom: 12px; }
+.data-card p { color: var(--text-soft); }
+.data-card small { display: block; color: #6b756f; margin-top: 10px; }
+
+.split {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 42px;
+  align-items: start;
+}
+.form-block label {
+  display: block;
+  font-weight: 850;
+  margin-bottom: 8px;
+}
+textarea {
+  width: 100%;
+  min-height: 135px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  background: var(--white);
+  color: var(--ink);
+}
+.channels-panel { padding: 22px; }
+.channel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.toggle {
+  border: 1px solid var(--line);
+  background: #f7f7f4;
+  border-radius: 8px;
+  min-height: 54px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+.toggle.active {
+  background: #e7f4f1;
+  border-color: var(--teal);
+  color: #0e5954;
+  font-weight: 850;
+}
+.risk-board {
+  margin-top: 24px;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+.checks { display: grid; gap: 8px; }
+.checks label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #f7f7f4;
+  border: 1px solid var(--line);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.quiz-card { padding: 24px; max-width: 820px; }
+.quiz-question { font-size: 23px; font-weight: 850; margin-bottom: 16px; color: var(--blue); }
+.quiz-options { display: flex; flex-wrap: wrap; gap: 10px; }
+.quiz-options button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 800;
+}
+.quiz-options button.correct { background: #dff3ea; border-color: #64ad89; }
+.quiz-options button.wrong { background: #fde2dc; border-color: #d75f49; }
+.quiz-footer { display: flex; align-items: center; gap: 14px; margin-top: 18px; }
+#quizFeedback { color: var(--text-soft); font-weight: 750; }
+
+.result-box { padding: 22px; }
+pre {
+  white-space: pre-wrap;
+  margin: 0;
+  color: #33424c;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+.source-section {
+  background: var(--blue);
+  color: var(--white);
+}
+.source-section h2 { color: var(--white); }
+.source-section p { color: rgba(255,255,255,.84); max-width: 860px; }
+.source-section a { color: var(--gold); }
+footer {
+  background: #071f28;
+  color: rgba(255,255,255,.74);
+  padding: 26px 0;
+}
+
+@media (max-width: 920px) {
+  .hero-grid, .split, .risk-board { grid-template-columns: 1fr; }
+  .outcomes, .data-grid { grid-template-columns: repeat(2, 1fr); }
+  nav { display: none; }
+  .hero { min-height: auto; padding: 72px 0; }
+}
+
+@media (max-width: 580px) {
+  .shell { width: min(100% - 28px, 1120px); }
+  .outcomes, .data-grid, .channel-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 44px; }
+  .section { padding: 60px 0; }
+}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell nav">
+      <div class="brand">
+        <span class="brand-mark">A</span>
+        <div>
+          <strong>IA y Periodismo</strong>
+          <small>Clase 1 · Ecosistema informativo</small>
+        </div>
+      </div>
+      <nav>
+        <a href="#datos">Datos</a>
+        <a href="#mapa">Mapa</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#entrega">Entrega</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">Curso IA y Periodismo</p>
+          <h1>El nuevo ecosistema informativo</h1>
+          <p class="hero-copy">Una clase interactiva para entender cómo redes, video, creadores, buscadores y chatbots de IA están cambiando la forma en que las personas encuentran noticias.</p>
+          <div class="actions">
+            <a class="btn primary" href="#ruta">Empezar clase</a>
+            <a class="btn ghost" href="#fuente">Ver fuente central</a>
+          </div>
+        </div>
+        <aside class="class-card">
+          <span>Duración sugerida</span>
+          <strong>3 horas</strong>
+          <p>Lectura guiada, discusión, interactivos y ejercicio final.</p>
+          <div class="mini-list">
+            <b>Fuente central:</b>
+            <a href="https://reutersinstitute.politics.ox.ac.uk/es/digital-news-report/2026" target="_blank" rel="noreferrer">Reuters Institute · Digital News Report 2026</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="ruta" class="section">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Ruta de aprendizaje</p>
+          <h2>Qué debe entender el estudiante al terminar</h2>
+          <p>La clase no empieza con herramientas. Empieza con una pregunta periodística: si la audiencia ya no llega solo por el medio, ¿cómo debe cambiar el trabajo del periodista?</p>
+        </div>
+        <div class="outcomes">
+          <article><span>1</span><h3>Ubicar el cambio</h3><p>Reconocer plataformas, video, creadores y chatbots como intermediarios de noticias.</p></article>
+          <article><span>2</span><h3>Leer datos</h3><p>Usar hallazgos del Reuters Institute para justificar el problema profesional.</p></article>
+          <article><span>3</span><h3>Detectar riesgos</h3><p>Identificar dónde se pierde contexto, aparece desinformación o se debilita la confianza.</p></article>
+          <article><span>4</span><h3>Proponer criterio</h3><p>Definir qué debe hacer mejor un periodista frente a la IA y las plataformas.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="datos" class="section muted">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Datos para discutir</p>
+          <h2>Tarjetas Reuters 2026</h2>
+          <p>Usa estas tarjetas para abrir conversación. Cada una conecta un dato con una decisión editorial.</p>
+        </div>
+        <div class="data-grid" id="dataGrid"></div>
+      </div>
+    </section>
+
+    <section id="mapa" class="section">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Interactivo principal</p>
+          <h2>Mapa de viaje de una noticia</h2>
+          <p>Elige por dónde podría circular una noticia hoy. Luego marca los riesgos y el papel que debería cumplir el periodista.</p>
+          <div class="form-block">
+            <label for="storyInput">Noticia o tema de trabajo</label>
+            <textarea id="storyInput" placeholder="Ejemplo: una denuncia sobre contratación pública, una emergencia ambiental, una decisión del Gobierno..."></textarea>
+          </div>
+        </div>
+        <div class="channels-panel">
+          <h3>Selecciona canales de circulación</h3>
+          <div class="channel-grid" id="channelGrid"></div>
+        </div>
+      </div>
+      <div class="shell">
+        <div class="risk-board">
+          <div>
+            <h3>Riesgos detectados</h3>
+            <div class="checks" id="riskChecks"></div>
+          </div>
+          <div>
+            <h3>Rol del periodista</h3>
+            <div class="checks" id="roleChecks"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="section muted">
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Comprobación rápida</p>
+          <h2>Fuente, canal o intermediario</h2>
+          <p>Clasifica cada elemento. El objetivo es distinguir quién produce información, quién la distribuye y quién la reinterpreta.</p>
+        </div>
+        <div class="quiz-card">
+          <div id="quizQuestion" class="quiz-question"></div>
+          <div id="quizOptions" class="quiz-options"></div>
+          <div class="quiz-footer">
+            <button id="nextQuestion" class="btn primary" type="button">Siguiente</button>
+            <span id="quizFeedback"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="entrega" class="section">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Entrega de clase</p>
+          <h2>Conclusión editorial</h2>
+          <p>Escribe una conclusión breve: ¿qué debe hacer un periodista para aportar valor en este ecosistema?</p>
+          <div class="form-block">
+            <label for="conclusionInput">Conclusión, máximo 5 líneas</label>
+            <textarea id="conclusionInput" placeholder="Mi conclusión es..."></textarea>
+          </div>
+          <div class="actions">
+            <button id="copyResult" class="btn primary" type="button">Copiar entrega</button>
+            <button id="resetWork" class="btn ghost dark" type="button">Reiniciar</button>
+          </div>
+        </div>
+        <aside class="result-box">
+          <h3>Resumen de entrega</h3>
+          <pre id="resultPreview">Completa el ejercicio para ver aquí tu entrega.</pre>
+        </aside>
+      </div>
+    </section>
+
+    <section id="fuente" class="section source-section">
+      <div class="shell">
+        <p class="eyebrow">Fuente central de la clase</p>
+        <h2>Reuters Institute, Universidad de Oxford</h2>
+        <p>Reuters Institute for the Study of Journalism. (2026). <em>Digital News Report 2026</em>. Universidad de Oxford.</p>
+        <p><a href="https://reutersinstitute.politics.ox.ac.uk/es/digital-news-report/2026" target="_blank" rel="noreferrer">Abrir informe en español</a></p>
+        <p><a href="https://reutersinstitute.politics.ox.ac.uk/es/digital-news-report/2026/usos-de-chatbots-ia-en-noticias-y-periodismo" target="_blank" rel="noreferrer">Abrir capítulo sobre chatbots de IA y noticias</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">Clase interactiva · IA y Periodismo · Andrés Álvarez</div>
+  </footer>
+
+  <script>
+const dataCards = [
+  {
+    stat: "Plataformas",
+    title: "Las noticias ya no llegan por un solo camino",
+    text: "El Digital News Report 2026 muestra que redes sociales, video, buscadores y nuevos intermediarios pesan cada vez más en el acceso a noticias.",
+    question: "¿Qué pierde un medio cuando la audiencia no entra directamente a su sitio?"
+  },
+  {
+    stat: "10%",
+    title: "Chatbots de IA como puerta de entrada",
+    text: "Reuters Institute reporta que el uso semanal de chatbots de IA para noticias subió de 7% a 10% a nivel global.",
+    question: "¿Qué pasa cuando una noticia se consume resumida por una IA?"
+  },
+  {
+    stat: "37%",
+    title: "La confianza sigue siendo el centro",
+    text: "El informe ubica la confianza global en noticias alrededor del 37%, una señal de presión para medios y periodistas.",
+    question: "¿Qué puede hacer un periodista para ganar confianza en este entorno?"
+  },
+  {
+    stat: "Jóvenes",
+    title: "Nuevos hábitos informativos",
+    text: "Las audiencias jóvenes tienen una relación menos estable con medios tradicionales y más vinculada a plataformas y formatos visuales.",
+    question: "¿Cómo cambia la forma de explicar una historia?"
+  }
+];
+
+const channels = [
+  "Medio digital",
+  "TikTok o Reels",
+  "YouTube",
+  "Instagram",
+  "X",
+  "WhatsApp",
+  "Buscador",
+  "Chatbot de IA",
+  "Creador o influencer",
+  "Newsletter"
+];
+
+const risks = [
+  "Se pierde contexto",
+  "La información se vuelve emocional o sensacionalista",
+  "Una IA resume sin mostrar fuentes",
+  "Un creador mezcla opinión con información",
+  "La noticia circula sin fecha o sin origen",
+  "El público no sabe qué está verificado"
+];
+
+const roles = [
+  "Verificar con fuentes primarias",
+  "Explicar contexto",
+  "Separar hechos de opiniones",
+  "Mostrar el origen de los datos",
+  "Evitar exageraciones",
+  "Comunicar con transparencia"
+];
+
+const quiz = [
+  { item: "Reuters Institute", answer: "Fuente", why: "Produce investigación y datos de referencia." },
+  { item: "TikTok", answer: "Canal", why: "Distribuye contenidos y condiciona formatos de consumo." },
+  { item: "Chatbot de IA", answer: "Intermediario", why: "Resume, reorganiza o presenta información al usuario." },
+  { item: "El País de Cali", answer: "Fuente", why: "Puede producir información periodística propia." },
+  { item: "WhatsApp", answer: "Canal", why: "Hace circular información, muchas veces sin contexto." },
+  { item: "Influencer que comenta una noticia", answer: "Intermediario", why: "Reinterpreta o encuadra información para una audiencia." }
+];
+
+const state = {
+  channels: new Set(),
+  risks: new Set(),
+  roles: new Set(),
+  quizIndex: 0,
+  quizScore: 0
+};
+
+function renderDataCards() {
+  const grid = document.getElementById("dataGrid");
+  grid.innerHTML = dataCards.map(card => `
+    <article class="data-card">
+      <strong>${card.stat}</strong>
+      <h3>${card.title}</h3>
+      <p>${card.text}</p>
+      <small><b>Pregunta:</b> ${card.question}</small>
+    </article>
+  `).join("");
+}
+
+function renderChannels() {
+  const grid = document.getElementById("channelGrid");
+  grid.innerHTML = channels.map(channel => `
+    <button class="toggle" type="button" data-channel="${channel}">${channel}</button>
+  `).join("");
+  grid.addEventListener("click", event => {
+    const button = event.target.closest("[data-channel]");
+    if (!button) return;
+    const value = button.dataset.channel;
+    if (state.channels.has(value)) {
+      state.channels.delete(value);
+      button.classList.remove("active");
+    } else {
+      state.channels.add(value);
+      button.classList.add("active");
+    }
+    updatePreview();
+  });
+}
+
+function renderChecks(targetId, items, store) {
+  const target = document.getElementById(targetId);
+  target.innerHTML = items.map(item => `
+    <label>
+      <input type="checkbox" value="${item}">
+      <span>${item}</span>
+    </label>
+  `).join("");
+  target.addEventListener("change", event => {
+    if (event.target.type !== "checkbox") return;
+    if (event.target.checked) store.add(event.target.value);
+    else store.delete(event.target.value);
+    updatePreview();
+  });
+}
+
+function renderQuiz() {
+  const current = quiz[state.quizIndex];
+  const question = document.getElementById("quizQuestion");
+  const options = document.getElementById("quizOptions");
+  const feedback = document.getElementById("quizFeedback");
+  question.textContent = `Clasifica: ${current.item}`;
+  options.innerHTML = ["Fuente", "Canal", "Intermediario"].map(option => `
+    <button type="button" data-answer="${option}">${option}</button>
+  `).join("");
+  feedback.textContent = `Pregunta ${state.quizIndex + 1} de ${quiz.length}`;
+}
+
+function handleQuiz() {
+  const options = document.getElementById("quizOptions");
+  const feedback = document.getElementById("quizFeedback");
+  options.addEventListener("click", event => {
+    const button = event.target.closest("[data-answer]");
+    if (!button || options.dataset.locked === "true") return;
+    const current = quiz[state.quizIndex];
+    const selected = button.dataset.answer;
+    options.dataset.locked = "true";
+    if (selected === current.answer) {
+      state.quizScore += 1;
+      button.classList.add("correct");
+      feedback.textContent = `Correcto. ${current.why}`;
+    } else {
+      button.classList.add("wrong");
+      feedback.textContent = `La respuesta es ${current.answer}. ${current.why}`;
+      [...options.children].forEach(child => {
+        if (child.dataset.answer === current.answer) child.classList.add("correct");
+      });
+    }
+    updatePreview();
+  });
+  document.getElementById("nextQuestion").addEventListener("click", () => {
+    state.quizIndex = (state.quizIndex + 1) % quiz.length;
+    options.dataset.locked = "false";
+    renderQuiz();
+  });
+}
+
+function selectedList(values) {
+  return values.size ? [...values].map(item => `- ${item}`).join("\n") : "- Sin seleccionar";
+}
+
+function updatePreview() {
+  const story = document.getElementById("storyInput").value.trim() || "Sin tema definido";
+  const conclusion = document.getElementById("conclusionInput").value.trim() || "Sin conclusión escrita";
+  const preview = `CLASE 1 · MAPA DE VIAJE DE UNA NOTICIA
+
+Tema o noticia:
+${story}
+
+Canales seleccionados:
+${selectedList(state.channels)}
+
+Riesgos detectados:
+${selectedList(state.risks)}
+
+Rol del periodista:
+${selectedList(state.roles)}
+
+Quiz:
+${state.quizScore} respuestas correctas registradas
+
+Conclusión editorial:
+${conclusion}`;
+  document.getElementById("resultPreview").textContent = preview;
+  localStorage.setItem("clase1Entrega", preview);
+}
+
+function bindInputs() {
+  document.getElementById("storyInput").addEventListener("input", updatePreview);
+  document.getElementById("conclusionInput").addEventListener("input", updatePreview);
+  document.getElementById("copyResult").addEventListener("click", async () => {
+    const text = document.getElementById("resultPreview").textContent;
+    await navigator.clipboard.writeText(text);
+    document.getElementById("copyResult").textContent = "Entrega copiada";
+    setTimeout(() => document.getElementById("copyResult").textContent = "Copiar entrega", 1800);
+  });
+  document.getElementById("resetWork").addEventListener("click", () => {
+    localStorage.removeItem("clase1Entrega");
+    window.location.reload();
+  });
+}
+
+function init() {
+  renderDataCards();
+  renderChannels();
+  renderChecks("riskChecks", risks, state.risks);
+  renderChecks("roleChecks", roles, state.roles);
+  renderQuiz();
+  handleQuiz();
+  bindInputs();
+  updatePreview();
+}
+
+init();
+  </script>
+</body>
+</html>
